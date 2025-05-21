@@ -64,7 +64,7 @@
     <h2>LMS e-Pembelajaran OSHWA</h2>
 
     <div id="step1">
-      <p><strong>PERINGATAN:</strong> Sila isikan <u>Nama penuh seperti dalam Kad Pengenalan</u> dan <u>alamat emel yang betul</u> untuk penerimaan sijil.</p>
+      <p><strong>PERINGATAN:</strong> Sila isikan <u>Nama penuh seperti dalam Kad Pengenalan</u> dan <u>alamat emel yang betul</u>.</p>
       <label>Nama:</label>
       <input type="text" id="nama" autocomplete="name" />
       <label>Emel:</label>
@@ -169,13 +169,7 @@
       })
       .then(res => res.json())
       .then(data => {
-        if(data.kod){
-          document.getElementById('result').innerHTML += `
-            <p><strong>Kod Sijil:</strong> ${data.kod}</p>
-            <p>Sijil akan dihantar ke emel anda secara automatik.</p>`;
-        } else {
-          document.getElementById('result').innerHTML += `<p>Maaf, kod sijil tidak diperolehi.</p>`;
-        }
+        document.getElementById('result').innerHTML += `<p>Rekod skor anda telah direkodkan. Terima kasih kerana menyertai latihan ini.</p>`;
       })
       .catch(err => {
         console.error(err);
