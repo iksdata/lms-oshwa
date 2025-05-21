@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LMS e-Pembelajaran OSHWA</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f7fa;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-top: 30px;
+    }
+    h2, h3 {
+      text-align: center;
+      color: #1a73e8;
+    }
+    .hidden { display: none; }
+    #player {
+      width: 100%;
+      height: 360px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #1558b0;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    input[type="text"], input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+    label { font-weight: bold; }
+    form p { margin-bottom: 5px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>LMS e-Pembelajaran OSHWA</h2>
+
+    <div id="step1">
+      <p><strong>PERINGATAN:</strong> Sila isikan <u>Nama penuh seperti dalam Kad Pengenalan</u> dan <u>alamat emel yang betul</u> untuk penerimaan sijil.</p>
+      <label>Nama:</label>
+      <input type="text" id="nama" autocomplete="name" />
+      <label>Emel:</label>
+      <input type="email" id="emel" autocomplete="email" />
+      <button onclick="startLMS()">Mula</button>
+    </div>
+
+    <div id="step2" class="hidden">
+      <h3>Modul Video</h3>
+      <div id="player"></div>
+      <button id="nextToQuiz" onclick="showQuiz()" disabled>Seterusnya ke Kuiz</button>
+    </div>
+
+    <div id="step3" class="hidden">
+      <h3>Kuiz: 10 Soalan</h3>
+      <form id="quizForm">
+        <div id="quizQuestions"></div>
+        <button type="submit">Hantar Jawapan</button>
+      </form>
+    </div>
+
+    <div id="step4" class="hidden">
+      <h3>Keputusan</h3>
+      <p id="result"></p>
+    </div>
+  </div>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    const questions = [
+      { q: "Apakah maksud OSHWA?", o: ["OSH-Workplace Assessment", "OSH-Working Assessment", "OSH-Workplace Application"], a: 0 },
+      { q: "Berapa kali kekerapaan pengisian OSHWA oleh majikan yang disyorkan?", o: ["3", "2", "1"], a: 1 },
+      { q: "Berapa peratuskan kandungan senarai semak OSHWA?", o: ["Fizikal 60%, Dokumen 40%", "Dokumen 30%, Fizikal 70%", "Fizikal 30%, Dokumen 70%"], a: 1 },
+      { q: "Berapa elemen yang terdapat dalam Bahagian Fizikal OSH-WA?", o: ["5", "6", "7"], a: 2 },
+      { q: "Siapakah yang boleh mengisi OSHWA dalam sistem MyKKP?", o: ["Pemilik PATK Tahap 1", "Majikan", "OSH-C"], a: 0 },
+      { q: "Apakah bahasa kebangsaan Malaysia?", o: ["Bahasa Tamil", "Bahasa Malaysia", "Bahasa Inggeris"], a: 1 },
+      { q: "1 meter = ? cm", o: ["100", "10", "1000"], a: 0 },
+      { q: "Apakah simbol kimia untuk air?", o: ["CO2", "O2", "H2O"], a: 2 },
+      { q: "Apakah warna daun biasa?", o: ["Biru", "Hijau", "Merah"], a: 1 },
+      { q: "Sistem suria mempunyai?", o: ["1 planet", "8 planet", "20 planet"], a: 1 }
+    ];
+
+    let nama = "", emel = "";
+    let player;
+
+    function startLMS() {
+      nama = document.getElementById('nama').value.trim();
+      emel = document.getElementById('emel').value.trim();
+      if (!nama || !emel) {
+        alert("Sila isi Nama dan Emel yang sah");
+        return;
+      }
+      document.getElementById('step1').classList.add('hidden');
+      document.getElementById('step2').classList.remove('hidden');
+      if (!player) createPlayer();
+    }
+
+    function createPlayer() {
+      player = new YT.Player('player', {
+        height: '360',
+        width: '640',
+        videoId: 'J8-Uw45aPFA',
+        events: { 'onStateChange': onPlayerStateChange },
+        playerVars: { 'controls': 1, 'rel': 0 }
+      });
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.ENDED) {
+        document.getElementById('nextToQuiz').disabled = false;
+      }
+    }
+
+    function showQuiz() {
+      document.getElementById('step2').classList.add('hidden');
+      document.getElementById('step3').classList.remove('hidden');
+      const qDiv = document.getElementById('quizQuestions');
+      qDiv.innerHTML = "";
+      questions.forEach((q, i) => {
+        const qHtml = `<p>${i + 1}. ${q.q}</p>` + q.o.map((opt, idx) => `
+          <label><input type="radio" name="q${i}" value="${idx}" required> ${opt}</label><br>`).join('');
+        qDiv.innerHTML += qHtml;
+      });
+    }
+
+    document.getElementById('quizForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      let score = 0;
+      questions.forEach((q, i) => {
+        const ans = document.querySelector(`input[name='q${i}']:checked`);
+        if (ans && parseInt(ans.value) === q.a) score++;
+      });
+
+      document.getElementById('step3').classList.add('hidden');
+      document.getElementById('step4').classList.remove('hidden');
+      document.getElementById('result').innerHTML = `Skor anda: ${score}/10. ${score >= 7 ? 'Lulus!' : 'Gagal.'}`;
+
+      fetch('https://script.google.com/macros/s/AKfycbzvO5HhWkTMF5vqtf9fjqJrQOp5SeMAT0W-ridzjqUN08Uqz_aAvsDWdQgMQpz_6KTH/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nama, emel, skor: score })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.kod){
+          document.getElementById('result').innerHTML += `
+            <p><strong>Kod Sijil:</strong> ${data.kod}</p>
+            <p>Sijil akan dihantar ke emel anda secara automatik.</p>`;
+        } else {
+          document.getElementById('result').innerHTML += `<p>Maaf, kod sijil tidak diperolehi.</p>`;
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById('result').innerHTML += `<p>Ralat sambungan, sila cuba lagi.</p>`;
+      });
+    });
+  </script>
+</body>
+</html>
