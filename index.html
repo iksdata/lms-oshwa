@@ -162,7 +162,7 @@
       document.getElementById('step4').classList.remove('hidden');
       document.getElementById('result').innerHTML = `Skor anda: ${score}/10. ${score >= 7 ? 'Lulus!' : 'Gagal.'}`;
 
-      fetch('https://script.google.com/macros/s/AKfycbxEDF3rwIsdw6uduK_qtBFn2uLmlyo39b_LrzJBkEB-pfbLGHfrV6CW_BfN9Iic9Ell/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbzOm6XTqAfdeM3cRS2sWkX_WjVc50SzaXTngnEDZbfACOiNCgFEdwQzIRwmUdEimXWV/exec', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nama, emel, skor: score })
