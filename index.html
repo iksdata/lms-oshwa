@@ -3,179 +3,215 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>LMS e-Pembelajaran OSHWA</title>
+  <title>LMS e-Pembelajaran OSHWA (Futuristik)</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f5f7fa;
-      color: #333;
       margin: 0;
       padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
     }
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: auto;
-      padding: 20px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      margin-top: 30px;
+      padding: 30px;
     }
     h2, h3 {
       text-align: center;
-      color: #1a73e8;
+      color: #00eaff;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
     }
-    .hidden { display: none; }
-    #player {
-      width: 100%;
-      height: 360px;
-      margin-bottom: 10px;
-    }
-    button {
-      padding: 10px 20px;
-      background: #1a73e8;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button:hover {
-      background: #1558b0;
-    }
-    button:disabled {
-      background: #ccc;
-      cursor: not-allowed;
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      margin-bottom: 20px;
     }
     input[type="text"], input[type="email"] {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      box-sizing: border-box;
+      padding: 12px;
+      margin: 10px 0 20px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
     }
-    label { font-weight: bold; }
-    form p { margin-bottom: 5px; font-weight: bold; }
+    .glass-button {
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 114, 255, 0.3);
+      margin: 10px;
+    }
+    .glass-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(0, 114, 255, 0.5);
+    }
+    .hidden { display: none; }
+    #player1, #player2, #playerMid {
+      width: 100%;
+      height: 360px;
+      margin-top: 10px;
+    }
+    .completion-message {
+      background: rgba(0,255,100,0.2);
+      border: 2px solid #00ff88;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      color: #00ffcc;
+      font-weight: bold;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>LMS e-Pembelajaran OSHWA</h2>
 
-    <div id="step1">
-      <p><strong>PERINGATAN:</strong> Sila isikan <u>Nama penuh seperti dalam Kad Pengenalan</u> dan <u>alamat emel yang betul</u>.</p>
+    <!-- Step 1 -->
+    <div id="step1" class="glass">
+      <h3>Maklumat Peserta</h3>
       <label>Nama:</label>
-      <input type="text" id="nama" autocomplete="name" />
+      <input type="text" id="nama">
       <label>Emel:</label>
-      <input type="email" id="emel" autocomplete="email" />
-      <button onclick="startLMS()">Mula</button>
+      <input type="email" id="emel">
+      <button class="glass-button" onclick="gotoModul1()">🚀 Mula</button>
     </div>
 
-    <div id="step2" class="hidden">
-      <h3>Modul Video</h3>
-      <div id="player"></div>
-      <button id="nextToQuiz" onclick="showQuiz()" disabled>Seterusnya ke Kuiz</button>
+    <!-- Modul 1 -->
+    <div id="modul1" class="glass hidden">
+      <h3>🎥 Modul 1: Pengenalan OSHWA</h3>
+      <div id="player1"></div>
+      <button class="glass-button" id="btnToModul2" onclick="gotoModul2()" disabled>Seterusnya ke Modul 2 ➡️</button>
     </div>
 
-    <div id="step3" class="hidden">
-      <h3>Kuiz: 10 Soalan</h3>
-      <form id="quizForm">
-        <div id="quizQuestions"></div>
-        <button type="submit">Hantar Jawapan</button>
-      </form>
+    <!-- Modul 2 -->
+    <div id="modul2" class="glass hidden">
+      <h3>🛠️ Modul 2: Langkah Pengisian OSHWA</h3>
+      <div id="playerMid"></div>
+      <div id="modul2buttons" class="hidden">
+        <p>Klik untuk buka borang:</p>
+        <button class="glass-button" onclick="window.open('https://iksdata.github.io/OSHWADoc/', '_blank')">📄 Audit Dokumentasi</button>
+        <button class="glass-button" onclick="window.open('https://iksdata.github.io/OSHWAFiz/', '_blank')">🏗️ Audit Fizikal</button><br>
+        <button class="glass-button" onclick="gotoModul3()">Seterusnya ke Modul 3 🎯</button>
+      </div>
     </div>
 
-    <div id="step4" class="hidden">
-      <h3>Keputusan</h3>
-      <p id="result"></p>
+    <!-- Modul 3 -->
+    <div id="modul3" class="glass hidden">
+      <h3>💻 Modul 3: Panduan OSHWA di MyKKP</h3>
+      <div id="player2"></div>
+      <button class="glass-button" id="btnSelesai" onclick="showTahniah()" disabled>Selesai Latihan ✅</button>
     </div>
+
+    <!-- Selesai -->
+    <div id="selesai" class="glass hidden">
+      <div class="completion-message">
+        🎉 Tahniah! Anda telah menyelesaikan latihan e-Pembelajaran OSHWA dengan jayanya.
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <a class="glass-button" href="https://forms.gle/example-form" target="_blank">💡 Hantar Cadangan / Maklum Balas</a>
+    </footer>
   </div>
 
   <script src="https://www.youtube.com/iframe_api"></script>
   <script>
-    const questions = [
-      { q: "Apakah maksud OSHWA?", o: ["OSH-Workplace Assessment", "OSH-Working Assessment", "OSH-Workplace Application"], a: 0 },
-      { q: "Berapa kali kekerapaan pengisian OSHWA oleh majikan yang disyorkan?", o: ["3", "2", "1"], a: 1 },
-      { q: "Berapa peratuskan kandungan senarai semak OSHWA?", o: ["Fizikal 60%, Dokumen 40%", "Dokumen 30%, Fizikal 70%", "Fizikal 30%, Dokumen 70%"], a: 1 },
-      { q: "Berapa elemen yang terdapat dalam Bahagian Fizikal OSH-WA?", o: ["5", "6", "7"], a: 2 },
-      { q: "Siapakah yang boleh mengisi OSHWA dalam sistem MyKKP?", o: ["Pemilik PATK Tahap 1", "Majikan", "OSH-C"], a: 0 },
-      { q: "Apakah bahasa kebangsaan Malaysia?", o: ["Bahasa Tamil", "Bahasa Malaysia", "Bahasa Inggeris"], a: 1 },
-      { q: "1 meter = ? cm", o: ["100", "10", "1000"], a: 0 },
-      { q: "Apakah simbol kimia untuk air?", o: ["CO2", "O2", "H2O"], a: 2 },
-      { q: "Apakah warna daun biasa?", o: ["Biru", "Hijau", "Merah"], a: 1 },
-      { q: "Sistem suria mempunyai?", o: ["1 planet", "8 planet", "20 planet"], a: 1 }
-    ];
+    let player1, player2, playerMid;
+    let nama = '', emel = '';
 
-    let nama = "", emel = "";
-    let player;
-
-    function startLMS() {
+    function gotoModul1() {
       nama = document.getElementById('nama').value.trim();
       emel = document.getElementById('emel').value.trim();
       if (!nama || !emel) {
-        alert("Sila isi Nama dan Emel yang sah");
+        alert("Sila isi Nama dan Emel yang sah.");
         return;
       }
       document.getElementById('step1').classList.add('hidden');
-      document.getElementById('step2').classList.remove('hidden');
-      if (!player) createPlayer();
+      document.getElementById('modul1').classList.remove('hidden');
+      if (!player1) createPlayer1();
     }
 
-    function createPlayer() {
-      player = new YT.Player('player', {
+    function gotoModul2() {
+      document.getElementById('modul1').classList.add('hidden');
+      document.getElementById('modul2').classList.remove('hidden');
+      if (!playerMid) createPlayerMid();
+    }
+
+    function gotoModul3() {
+      document.getElementById('modul2').classList.add('hidden');
+      document.getElementById('modul3').classList.remove('hidden');
+      if (!player2) createPlayer2();
+    }
+
+    function showTahniah() {
+      document.getElementById('modul3').classList.add('hidden');
+      document.getElementById('selesai').classList.remove('hidden');
+    }
+
+    function createPlayer1() {
+      player1 = new YT.Player('player1', {
         height: '360',
         width: '640',
-        videoId: 'J8-Uw45aPFA',
-        events: { 'onStateChange': onPlayerStateChange },
+        videoId: '4xKx7t1qbkY',
+        events: {
+          'onStateChange': function(e) {
+            if (e.data === YT.PlayerState.ENDED) {
+              document.getElementById('btnToModul2').disabled = false;
+            }
+          }
+        },
         playerVars: { 'controls': 1, 'rel': 0 }
       });
     }
 
-    function onPlayerStateChange(event) {
-      if (event.data === YT.PlayerState.ENDED) {
-        document.getElementById('nextToQuiz').disabled = false;
-      }
-    }
-
-    function showQuiz() {
-      document.getElementById('step2').classList.add('hidden');
-      document.getElementById('step3').classList.remove('hidden');
-      const qDiv = document.getElementById('quizQuestions');
-      qDiv.innerHTML = "";
-      questions.forEach((q, i) => {
-        const qHtml = `<p>${i + 1}. ${q.q}</p>` + q.o.map((opt, idx) => `
-          <label><input type="radio" name="q${i}" value="${idx}" required> ${opt}</label><br>`).join('');
-        qDiv.innerHTML += qHtml;
+    function createPlayerMid() {
+      playerMid = new YT.Player('playerMid', {
+        height: '360',
+        width: '640',
+        videoId: 'PP-qbPFV_N8',
+        events: {
+          'onStateChange': function(e) {
+            if (e.data === YT.PlayerState.ENDED) {
+              document.getElementById('modul2buttons').classList.remove('hidden');
+            }
+          }
+        },
+        playerVars: { 'controls': 1, 'rel': 0 }
       });
     }
 
-    document.getElementById('quizForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      let score = 0;
-      questions.forEach((q, i) => {
-        const ans = document.querySelector(`input[name='q${i}']:checked`);
-        if (ans && parseInt(ans.value) === q.a) score++;
+    function createPlayer2() {
+      player2 = new YT.Player('player2', {
+        height: '360',
+        width: '640',
+        videoId: '4xKx7t1qbkY',
+        events: {
+          'onStateChange': function(e) {
+            if (e.data === YT.PlayerState.ENDED) {
+              document.getElementById('btnSelesai').disabled = false;
+            }
+          }
+        },
+        playerVars: { 'controls': 1, 'rel': 0 }
       });
-
-      document.getElementById('step3').classList.add('hidden');
-      document.getElementById('step4').classList.remove('hidden');
-      document.getElementById('result').innerHTML = `Skor anda: ${score}/10. ${score >= 7 ? 'Lulus!' : 'Gagal.'}`;
-
-      fetch('https://script.google.com/macros/s/AKfycbzOm6XTqAfdeM3cRS2sWkX_WjVc50SzaXTngnEDZbfACOiNCgFEdwQzIRwmUdEimXWV/exec', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nama, emel, skor: score })
-      })
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('result').innerHTML += `<p>Rekod skor anda telah direkodkan. Terima kasih kerana menyertai latihan ini.</p>`;
-      })
-      .catch(err => {
-        console.error(err);
-        document.getElementById('result').innerHTML += `<p>Ralat sambungan, sila cuba lagi.</p>`;
-      });
-    });
+    }
   </script>
 </body>
 </html>
