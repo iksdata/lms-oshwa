@@ -80,7 +80,7 @@
       font-size: 0.9em;
       color: #ffcc00;
       text-align: center;
-      margin-top: -5px;
+      margin: 10px 0 -10px;
     }
   </style>
 </head>
@@ -102,6 +102,7 @@
     <div id="modul1" class="glass hidden">
       <h3>🎥 Modul 1: Pengenalan OSHWA</h3>
       <div id="player1"></div>
+      <p class="note">🔒 Butang Modul seterusnya hanya terbuka setelah video dimainkan sepenuhnya.</p>
       <button class="glass-button" id="btnToModul2" onclick="gotoModul2(); showWarningIfDisabled('btnToModul2', 'alertModul1')" disabled>
         Seterusnya ke Modul 2 ➡️
       </button>
@@ -117,6 +118,7 @@
         <p>Klik untuk buka borang:</p>
         <button class="glass-button" onclick="window.open('https://iksdata.github.io/OSHWADoc/', '_blank')">📄 Audit Dokumentasi</button>
         <button class="glass-button" onclick="window.open('https://iksdata.github.io/OSHWAFiz/', '_blank')">🏗️ Audit Fizikal</button><br>
+        <p class="note">🔒 Butang Modul seterusnya hanya terbuka setelah video dimainkan sepenuhnya.</p>
         <button class="glass-button" id="btnToModul3" onclick="gotoModul3(); showWarningIfDisabled('btnToModul3', 'alertModul2')" disabled>
           Seterusnya ke Modul 3 🎯
         </button>
@@ -129,6 +131,7 @@
       <h3>💻 Modul 3: Panduan OSHWA di MyKKP</h3>
       <div id="player2"></div>
       <button class="glass-button" onclick="gotoModul2()">⬅️ Kembali ke Modul 2</button>
+      <p class="note">🔒 Butang ini hanya terbuka setelah video dimainkan sepenuhnya.</p>
       <button class="glass-button" id="btnSelesai" onclick="showTahniah(); showWarningIfDisabled('btnSelesai', 'alertModul3')" disabled>
         Selesai Latihan ✅
       </button>
