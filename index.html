@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>LMS e-Pembelajaran OSHWA (Futuristik)</title>
+  <title>LMS e-Pembelajaran OSHWA</title>
   <style>
     body {
       margin: 0;
@@ -76,6 +76,24 @@
       text-align: center;
       margin-top: 40px;
     }
+    .note {
+      font-size: 0.9em;
+      color: #ffcc00;
+      text-align: center;
+      margin-top: -5px;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-5px); }
+      40% { transform: translateX(5px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+      100% { transform: translateX(0); }
+    }
+    .shake {
+      animation: shake 0.3s;
+    }
   </style>
 </head>
 <body>
@@ -89,25 +107,32 @@
       <input type="text" id="nama">
       <label>Emel:</label>
       <input type="email" id="emel">
-      <button class="glass-button" onclick="gotoModul1()">🚀 Mula</button>
+      <button class="glass-button" onclick="startModul1()">🚀 Mula</button>
     </div>
 
     <!-- Modul 1 -->
     <div id="modul1" class="glass hidden">
       <h3>🎥 Modul 1: Pengenalan OSHWA</h3>
       <div id="player1"></div>
-      <button class="glass-button" id="btnToModul2" onclick="gotoModul2()" disabled>Seterusnya ke Modul 2 ➡️</button>
+      <button class="glass-button" id="btnToModul2" onclick="handleNextStep('btnToModul2', 'alertModul1', gotoModul2)" disabled>
+        Seterusnya ke Modul 2 ➡️
+      </button>
+      <p id="alertModul1" class="note hidden">⚠️ Anda perlu tonton hingga akhir sebelum meneruskan.</p>
     </div>
 
     <!-- Modul 2 -->
     <div id="modul2" class="glass hidden">
       <h3>🛠️ Modul 2: Langkah Pengisian OSHWA</h3>
       <div id="playerMid"></div>
+      <button class="glass-button" onclick="gotoModul1()">⬅️ Kembali ke Modul 1</button>
       <div id="modul2buttons" class="hidden">
         <p>Klik untuk buka borang:</p>
         <button class="glass-button" onclick="window.open('https://iksdata.github.io/OSHWADoc/', '_blank')">📄 Audit Dokumentasi</button>
         <button class="glass-button" onclick="window.open('https://iksdata.github.io/OSHWAFiz/', '_blank')">🏗️ Audit Fizikal</button><br>
-        <button class="glass-button" onclick="gotoModul3()">Seterusnya ke Modul 3 🎯</button>
+        <button class="glass-button" id="btnToModul3" onclick="handleNextStep('btnToModul3', 'alertModul2', gotoModul3)" disabled>
+          Seterusnya ke Modul 3 🎯
+        </button>
+        <p id="alertModul2" class="note hidden">⚠️ Anda perlu tonton hingga akhir sebelum meneruskan.</p>
       </div>
     </div>
 
@@ -115,7 +140,11 @@
     <div id="modul3" class="glass hidden">
       <h3>💻 Modul 3: Panduan OSHWA di MyKKP</h3>
       <div id="player2"></div>
-      <button class="glass-button" id="btnSelesai" onclick="showTahniah()" disabled>Selesai Latihan ✅</button>
+      <button class="glass-button" onclick="gotoModul2()">⬅️ Kembali ke Modul 2</button>
+      <button class="glass-button" id="btnSelesai" onclick="handleNextStep('btnSelesai', 'alertModul3', showTahniah)" disabled>
+        Selesai Latihan ✅
+      </button>
+      <p id="alertModul3" class="note hidden">⚠️ Anda perlu tonton hingga akhir sebelum meneruskan.</p>
     </div>
 
     <!-- Selesai -->
@@ -136,7 +165,7 @@
     let player1, player2, playerMid;
     let nama = '', emel = '';
 
-    function gotoModul1() {
+    function startModul1() {
       nama = document.getElementById('nama').value.trim();
       emel = document.getElementById('emel').value.trim();
       if (!nama || !emel) {
@@ -145,19 +174,25 @@
       }
       document.getElementById('step1').classList.add('hidden');
       document.getElementById('modul1').classList.remove('hidden');
-      if (!player1) createPlayer1();
+    }
+
+    function gotoModul1() {
+      document.getElementById('modul2').classList.add('hidden');
+      document.getElementById('modul3').classList.add('hidden');
+      document.getElementById('selesai').classList.add('hidden');
+      document.getElementById('modul1').classList.remove('hidden');
     }
 
     function gotoModul2() {
       document.getElementById('modul1').classList.add('hidden');
+      document.getElementById('modul3').classList.add('hidden');
+      document.getElementById('selesai').classList.add('hidden');
       document.getElementById('modul2').classList.remove('hidden');
-      if (!playerMid) createPlayerMid();
     }
 
     function gotoModul3() {
       document.getElementById('modul2').classList.add('hidden');
       document.getElementById('modul3').classList.remove('hidden');
-      if (!player2) createPlayer2();
     }
 
     function showTahniah() {
@@ -165,7 +200,23 @@
       document.getElementById('selesai').classList.remove('hidden');
     }
 
-    function createPlayer1() {
+    function handleNextStep(buttonId, alertId, callback) {
+      const btn = document.getElementById(buttonId);
+      const alert = document.getElementById(alertId);
+      if (btn.disabled) {
+        alert.classList.remove('hidden');
+        alert.style.color = "#ff4d4d";
+        btn.classList.add('shake');
+        setTimeout(() => {
+          alert.classList.add('hidden');
+          btn.classList.remove('shake');
+        }, 3000);
+      } else {
+        callback();
+      }
+    }
+
+    function onYouTubeIframeAPIReady() {
       player1 = new YT.Player('player1', {
         height: '360',
         width: '640',
@@ -179,9 +230,7 @@
         },
         playerVars: { 'controls': 1, 'rel': 0 }
       });
-    }
 
-    function createPlayerMid() {
       playerMid = new YT.Player('playerMid', {
         height: '360',
         width: '640',
@@ -190,14 +239,13 @@
           'onStateChange': function(e) {
             if (e.data === YT.PlayerState.ENDED) {
               document.getElementById('modul2buttons').classList.remove('hidden');
+              document.getElementById('btnToModul3').disabled = false;
             }
           }
         },
         playerVars: { 'controls': 1, 'rel': 0 }
       });
-    }
 
-    function createPlayer2() {
       player2 = new YT.Player('player2', {
         height: '360',
         width: '640',
