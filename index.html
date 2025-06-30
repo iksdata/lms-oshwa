@@ -82,18 +82,6 @@
       text-align: center;
       margin-top: -5px;
     }
-
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      20% { transform: translateX(-5px); }
-      40% { transform: translateX(5px); }
-      60% { transform: translateX(-5px); }
-      80% { transform: translateX(5px); }
-      100% { transform: translateX(0); }
-    }
-    .shake {
-      animation: shake 0.3s;
-    }
   </style>
 </head>
 <body>
@@ -114,10 +102,10 @@
     <div id="modul1" class="glass hidden">
       <h3>🎥 Modul 1: Pengenalan OSHWA</h3>
       <div id="player1"></div>
-      <button class="glass-button" id="btnToModul2" onclick="handleNextStep('btnToModul2', 'alertModul1', gotoModul2)" disabled>
+      <button class="glass-button" id="btnToModul2" onclick="gotoModul2(); showWarningIfDisabled('btnToModul2', 'alertModul1')" disabled>
         Seterusnya ke Modul 2 ➡️
       </button>
-      <p id="alertModul1" class="note hidden">⚠️ Anda perlu tonton hingga akhir sebelum meneruskan.</p>
+      <p id="alertModul1" class="note hidden">⚠️ Butang hanya boleh ditekan selepas selesai menonton video.</p>
     </div>
 
     <!-- Modul 2 -->
@@ -129,10 +117,10 @@
         <p>Klik untuk buka borang:</p>
         <button class="glass-button" onclick="window.open('https://iksdata.github.io/OSHWADoc/', '_blank')">📄 Audit Dokumentasi</button>
         <button class="glass-button" onclick="window.open('https://iksdata.github.io/OSHWAFiz/', '_blank')">🏗️ Audit Fizikal</button><br>
-        <button class="glass-button" id="btnToModul3" onclick="handleNextStep('btnToModul3', 'alertModul2', gotoModul3)" disabled>
+        <button class="glass-button" id="btnToModul3" onclick="gotoModul3(); showWarningIfDisabled('btnToModul3', 'alertModul2')" disabled>
           Seterusnya ke Modul 3 🎯
         </button>
-        <p id="alertModul2" class="note hidden">⚠️ Anda perlu tonton hingga akhir sebelum meneruskan.</p>
+        <p id="alertModul2" class="note hidden">⚠️ Butang hanya boleh ditekan selepas selesai menonton video.</p>
       </div>
     </div>
 
@@ -141,10 +129,10 @@
       <h3>💻 Modul 3: Panduan OSHWA di MyKKP</h3>
       <div id="player2"></div>
       <button class="glass-button" onclick="gotoModul2()">⬅️ Kembali ke Modul 2</button>
-      <button class="glass-button" id="btnSelesai" onclick="handleNextStep('btnSelesai', 'alertModul3', showTahniah)" disabled>
+      <button class="glass-button" id="btnSelesai" onclick="showTahniah(); showWarningIfDisabled('btnSelesai', 'alertModul3')" disabled>
         Selesai Latihan ✅
       </button>
-      <p id="alertModul3" class="note hidden">⚠️ Anda perlu tonton hingga akhir sebelum meneruskan.</p>
+      <p id="alertModul3" class="note hidden">⚠️ Butang hanya boleh ditekan selepas selesai menonton video.</p>
     </div>
 
     <!-- Selesai -->
@@ -174,6 +162,7 @@
       }
       document.getElementById('step1').classList.add('hidden');
       document.getElementById('modul1').classList.remove('hidden');
+      if (!player1) createPlayer1();
     }
 
     function gotoModul1() {
@@ -188,11 +177,13 @@
       document.getElementById('modul3').classList.add('hidden');
       document.getElementById('selesai').classList.add('hidden');
       document.getElementById('modul2').classList.remove('hidden');
+      if (!playerMid) createPlayerMid();
     }
 
     function gotoModul3() {
       document.getElementById('modul2').classList.add('hidden');
       document.getElementById('modul3').classList.remove('hidden');
+      if (!player2) createPlayer2();
     }
 
     function showTahniah() {
@@ -200,23 +191,18 @@
       document.getElementById('selesai').classList.remove('hidden');
     }
 
-    function handleNextStep(buttonId, alertId, callback) {
+    function showWarningIfDisabled(buttonId, alertId) {
       const btn = document.getElementById(buttonId);
       const alert = document.getElementById(alertId);
-      if (btn.disabled) {
+      if (btn && btn.disabled) {
         alert.classList.remove('hidden');
-        alert.style.color = "#ff4d4d";
-        btn.classList.add('shake');
         setTimeout(() => {
           alert.classList.add('hidden');
-          btn.classList.remove('shake');
         }, 3000);
-      } else {
-        callback();
       }
     }
 
-    function onYouTubeIframeAPIReady() {
+    function createPlayer1() {
       player1 = new YT.Player('player1', {
         height: '360',
         width: '640',
@@ -230,7 +216,9 @@
         },
         playerVars: { 'controls': 1, 'rel': 0 }
       });
+    }
 
+    function createPlayerMid() {
       playerMid = new YT.Player('playerMid', {
         height: '360',
         width: '640',
@@ -245,7 +233,9 @@
         },
         playerVars: { 'controls': 1, 'rel': 0 }
       });
+    }
 
+    function createPlayer2() {
       player2 = new YT.Player('player2', {
         height: '360',
         width: '640',
